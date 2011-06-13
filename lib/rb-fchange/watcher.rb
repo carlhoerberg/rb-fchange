@@ -80,7 +80,7 @@ module FChange
       @notifier = notifier
       @callback = callback || proc {}
       @path = path
-      @path = %x{ cygpath -w #{path} }.strip if Config::CONFIG['target_os'] == 'cygwin'
+      @path = %x{ cygpath -w '#{path}' }.strip if Config::CONFIG['target_os'] == 'cygwin'
       @flags = flags
       @recursive = recursive ? 1 : 0
 
