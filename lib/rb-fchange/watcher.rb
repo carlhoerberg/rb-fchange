@@ -80,12 +80,13 @@ module FChange
       @notifier = notifier
       @callback = callback || proc {}
       @path = path
+      @path = %x{ cygpath -w #{path} }.strip if Config::CONFIG['target_os'] == 'cygwin'
       @flags = flags
       @recursive = recursive ? 1 : 0
 
-      @id = Native.FindFirstChangeNotificationA(path, @recursive,
+      @id = Native.FindFirstChangeNotificationA(@path, @recursive,
         Native::Flags.to_mask(flags));
-#      @id = Native.FindFirstChangeNotificationW(normalize_path(path), @recursive,
+#      @id = Native.FindFirstChangeNotificationW(normalize_path(@path), @recursive,
 #        Native::Flags.to_mask(flags));
  
       unless @id < 0
